@@ -11,9 +11,9 @@ const client = new Client({
 const scrapeData = async () => {
     // Open browser instance
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         defaultViewport: null,
-        executablePath: '/path/to/chromium'
+        executablePath: 'C:/Program Files/Git/app'
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
