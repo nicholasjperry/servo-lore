@@ -13,6 +13,7 @@ const scrapeData = async () => {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
+        executablePath: '/path/to/chromium'
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
