@@ -81,7 +81,7 @@ client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
     setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         yield deleteEmbedMessage();
         yield sendEmbedMessage();
-    }), 60000 * 6);
+    }), 60000);
 }));
 // Logging the bot in to the server with token
 client.login(process.env.BOT_TOKEN);
