@@ -13,7 +13,7 @@ const scrapeData = async () => {
     const browser = await puppeteer.launch({
         headless: true,
         defaultViewport: null,
-        executablePath: 'C:/Users/daytr/.cache/puppeteer/chrome/win64-1095492/chrome-win/chrome.exe'
+        executablePath: process.env.PUPPETEER_PATH
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
