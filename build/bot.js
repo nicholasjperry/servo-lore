@@ -8,31 +8,79 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-require('dotenv').config();
-// import { scrape } from './scrape';
-const { EmbedBuilder } = require('discord.js');
-const { Client } = require('discord.js');
-const client = new Client({
-    intents: ["Guilds", "GuildMessages", "MessageContent", "GuildMembers"]
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
+require("dotenv/config");
+const puppeteer_1 = __importDefault(require("puppeteer"));
+// Instantiating bot/intents
+const client = new discord_js_1.Client({
+    intents: [discord_js_1.GatewayIntentBits.Guilds, discord_js_1.GatewayIntentBits.GuildMessages, discord_js_1.GatewayIntentBits.MessageContent, discord_js_1.GatewayIntentBits.GuildMembers]
 });
-// const prefix = '/';
-client.on('ready', () => {
-    console.log(`${client.user.tag} has logged in.`);
+const scrapeData = () => __awaiter(void 0, void 0, void 0, function* () {
+    // Open browser instance
+    const browser = yield puppeteer_1.default.launch({
+        headless: false,
+        defaultViewport: null,
+    });
+    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
+    // Navigate to URL
+    const page = yield browser.newPage();
+    yield page.goto(url);
+    console.log(`Navigating to ${url}`);
+    // await page.waitForSelector('#n-randompage a[href="/wiki/Special:Random"]');
+    // await page.click('#n-randompage a[href="/wiki/Special:Random"]');
+    // await page.waitForNavigation();
+    try {
+        // Scraping data
+        const body = yield page.evaluate(() => {
+            var _a;
+            return (_a = document.querySelector('#bodyContent #mw-content-text p')) === null || _a === void 0 ? void 0 : _a.textContent;
+        });
+        // const header = await page.evaluate(() => {
+        //     return document.querySelector('h1[class="firstHeading"]')?.textContent;
+        // });
+        return body;
+    }
+    catch (err) {
+        console.log(err);
+    }
+    finally {
+        yield page.setCacheEnabled(false);
+        yield page.close();
+        yield browser.close();
+    }
 });
-client.on('messageCreate', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    if (message.author.client)
-        return;
-    message.channel.send({
-        embeds: [new EmbedBuilder()
-                .setDescription(`A look at this week's Deep Dive`)
-                .setTitle(`Deep Dive`)
-                .setAuthor({
-                name: client.user.tag,
-                iconURL: client.user.defaultAvatarURL,
-            })
+// Sending embed message
+const sendEmbedMessage = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield scrapeData();
+    const channel = client.channels.cache.get('1084926092600688740');
+    channel.send({
+        embeds: [
+            new discord_js_1.EmbedBuilder()
+                .setDescription(data)
                 .setColor('Aqua')
         ]
     });
+});
+const deleteEmbedMessage = () => __awaiter(void 0, void 0, void 0, function* () {
+    const channel = client.channels.cache.get('1084926092600688740');
+    const messages = yield channel.messages.fetch();
+    const botMessage = messages.find((m) => { var _a; return m.author.id === ((_a = client === null || client === void 0 ? void 0 : client.user) === null || _a === void 0 ? void 0 : _a.id); });
+    if (botMessage) {
+        yield botMessage.delete();
+    }
+    else {
+        return;
+    }
+});
+client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
+    setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield deleteEmbedMessage();
+        yield sendEmbedMessage();
+    }), 60000 * 6);
 }));
+// Logging the bot in to the server with token
 client.login(process.env.BOT_TOKEN);
-// scrape();

@@ -1,6 +1,6 @@
 import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
 import 'dotenv/config';
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 
 // Instantiating bot/intents
 const client = new Client({ 
@@ -10,13 +10,13 @@ const client = new Client({
 const scrapeData = async () => {
     // Open browser instance
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         defaultViewport: null,
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
     // Navigate to URL
-    const page = await browser.newPage({ waitUntil: ['networkidle0', 'domcontentloaded'] });
+    const page = await browser.newPage();
     await page.goto(url);
     console.log(`Navigating to ${url}`);
 
@@ -53,7 +53,7 @@ const sendEmbedMessage = async () => {
     (channel as any).send({
         embeds: [
             new EmbedBuilder()
-            .setDescription(data)
+            .setDescription(data as any)
             .setColor('Aqua')
         ]
     });
@@ -75,7 +75,7 @@ client.on('ready', async () => {
     setInterval(async () => {
         await deleteEmbedMessage();
         await sendEmbedMessage();
-    }, 60000 * 60)
+    }, 60000 * 6)
 });
 
 // Logging the bot in to the server with token
