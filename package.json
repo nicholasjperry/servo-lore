@@ -21,7 +21,8 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "node-schedule": "^2.1.1",
-    "puppeteer": "^19.7.3"
+    "puppeteer": "^19.7.3",
+    "puppeteer-core": "^19.7.4"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.0",
