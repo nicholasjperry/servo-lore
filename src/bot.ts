@@ -35,7 +35,7 @@ const scrapeData = async () => {
         //     return document.querySelector('h1[class="firstHeading"]')?.textContent;
         // });
         
-    return body;
+        return body;
     
     } catch(err) {
         console.log(err); 
@@ -56,8 +56,7 @@ const sendEmbedMessage = async () => {
             .setDescription(data)
             .setColor('Aqua')
         ]
-    })
-    
+    });
 }
 
 const deleteEmbedMessage = async () => {
@@ -65,7 +64,7 @@ const deleteEmbedMessage = async () => {
     const messages = await (channel as any).messages.fetch()
     const botMessage = messages.find((m: { author: { id: string | undefined; }; }) => m.author.id === client?.user?.id)
 
-    if(botMessage){
+    if (botMessage) {
         await botMessage.delete();
     } else {
         return;
