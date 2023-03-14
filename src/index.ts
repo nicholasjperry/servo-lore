@@ -76,7 +76,7 @@ client.on('ready', async () => {
     setInterval(async () => {
         await deleteEmbedMessage();
         await sendEmbedMessage();
-    }, 60000)
+    }, 10000)
 });
 
 // Logging the bot in to the server with token
