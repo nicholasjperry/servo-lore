@@ -14,7 +14,7 @@ const scrapeData = async () => {
         headless: true,
         defaultViewport: null,
         executablePath: process.env.PUPPETEER_PATH,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+        args: ["--no-sandbox", "--disable-setupid-sandbox"]
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
