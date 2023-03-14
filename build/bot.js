@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-require("dotenv/config");
+const dotenv_1 = __importDefault(require("dotenv"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
+dotenv_1.default.config();
 // Instantiating bot/intents
 const client = new discord_js_1.Client({
     intents: [discord_js_1.GatewayIntentBits.Guilds, discord_js_1.GatewayIntentBits.GuildMessages, discord_js_1.GatewayIntentBits.MessageContent, discord_js_1.GatewayIntentBits.GuildMembers]
