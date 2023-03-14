@@ -1,6 +1,7 @@
 import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import puppeteer from 'puppeteer';
+dotenv.config();
 
 // Instantiating bot/intents
 const client = new Client({ 
