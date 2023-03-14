@@ -49,7 +49,7 @@ const scrapeData = async () => {
 // Sending embed message
 const sendEmbedMessage = async () => {
     const data = await scrapeData();
-    const channel = client.channels.cache.get('1082887198971535371');
+    const channel = client.channels.cache.get('1084926092600688740');
     (channel as any).send({
         embeds: [
             new EmbedBuilder()
@@ -60,7 +60,7 @@ const sendEmbedMessage = async () => {
 }
 
 const deleteEmbedMessage = async () => {
-    const channel = client.channels.cache.get('1082887198971535371');
+    const channel = client.channels.cache.get('1084926092600688740');
     const messages = await (channel as any).messages.fetch()
     const botMessage = messages.find((m: { author: { id: string | undefined; }; }) => m.author.id === client?.user?.id)
 
