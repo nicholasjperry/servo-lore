@@ -11,7 +11,6 @@ const client = new Client({
 const scrapeData = async () => {
     // Open browser instance
     const browser = await puppeteer.launch({
-        headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
