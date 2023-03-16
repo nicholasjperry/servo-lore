@@ -20,7 +20,6 @@ const scrapeData = async () => {
     const page = await browser.newPage();
     await page.goto(url);
     console.log(`Navigating to ${url}`);
-    console.log(process.env.PUPPETEER_EXECUTABLE_PATH);
 
     // await page.waitForSelector('#n-randompage a[href="/wiki/Special:Random"]');
     // await page.click('#n-randompage a[href="/wiki/Special:Random"]');
