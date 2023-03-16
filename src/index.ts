@@ -11,7 +11,8 @@ const client = new Client({
 const scrapeData = async () => {
     // Open browser instance
     const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox", `--disk-cache-dir=${process.env.PUPPETEER_CACHE_DIR}`]
+        args: ["--no-sandbox", "--disable-setuid-sandbox", `--disk-cache-dir=${process.env.PUPPETEER_CACHE_DIR}`],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
@@ -19,6 +20,7 @@ const scrapeData = async () => {
     const page = await browser.newPage();
     await page.goto(url);
     console.log(`Navigating to ${url}`);
+    console.log(process.env.PUPPETEER_EXECUTABLE_PATH);
 
     // await page.waitForSelector('#n-randompage a[href="/wiki/Special:Random"]');
     // await page.click('#n-randompage a[href="/wiki/Special:Random"]');
