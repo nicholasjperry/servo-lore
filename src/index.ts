@@ -11,6 +11,7 @@ const client = new Client({
 const scrapeData = async () => {
     // Open browser instance
     const browser = await puppeteer.launch({
+        headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox", `--disk-cache-dir=${process.env.PUPPETEER_CACHE_DIR}`],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
     });
