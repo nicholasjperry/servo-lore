@@ -21,10 +21,6 @@ const scrapeData = async () => {
     await page.goto(url);
     console.log(`Navigating to ${url}`);
 
-    // await page.waitForSelector('#n-randompage a[href="/wiki/Special:Random"]');
-    // await page.click('#n-randompage a[href="/wiki/Special:Random"]');
-    // await page.waitForNavigation();
-
     try {
         
         // Scraping data
@@ -32,12 +28,7 @@ const scrapeData = async () => {
             return document.querySelector('#bodyContent #mw-content-text p')?.textContent;
         });
 
-        // const header = await page.evaluate(() => {
-        //     return document.querySelector('h1[class="firstHeading"]')?.textContent;
-        // });
-        
         return body;
-    
     } catch(err) {
         console.log(err); 
     } finally {
@@ -76,7 +67,7 @@ client.on('ready', async () => {
     setInterval(async () => {
         await deleteEmbedMessage();
         await sendEmbedMessage();
-    }, 10000)
+    }, 20000)
 });
 
 // Logging the bot in to the server with token
