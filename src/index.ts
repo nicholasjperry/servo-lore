@@ -1,6 +1,6 @@
 import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
 import dotenv from 'dotenv';
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 dotenv.config();
 
 // Instantiating bot/intents
@@ -21,7 +21,6 @@ const scrapeData = async () => {
     const page = await browser.newPage();
     await page.goto(url);
     console.log(`Navigating to ${url}`);
-
     try {
         
         // Scraping data
@@ -33,7 +32,6 @@ const scrapeData = async () => {
     } catch(err) {
         console.log(err); 
     } finally {
-        await page.setCacheEnabled(false);
         await page.close();
         await browser.close();
     }
