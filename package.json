@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node build/index.js",
     "start:dev": "npx nodemon",
-    "dev": "nodemon ./src/bot.js",
+    "dev": "nodemon ./src/index.ts",
     "build": "rimraf ./build && tsc"
   },
   "keywords": [],
