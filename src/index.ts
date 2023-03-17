@@ -13,7 +13,7 @@ const scrapeData = async () => {
     const browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
     });
     const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
