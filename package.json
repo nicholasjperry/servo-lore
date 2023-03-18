@@ -18,6 +18,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/puppeteer": "^7.0.4",
+    "chromium": "^3.0.3",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "node-schedule": "^2.1.1",
