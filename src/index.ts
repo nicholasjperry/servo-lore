@@ -42,7 +42,7 @@ const scrapeData = async () => {
 const sendEmbedMessage = async () => {
     const data = await scrapeData();
     const channel = client.channels.cache.get('1084926092600688740');
-    (channel as TextChannel).send({
+    (channel as typeof TextChannel).send({
         embeds: [
             new EmbedBuilder()
             .setDescription(data as any)
