@@ -1,3 +1,5 @@
+import { TextChannel } from "discord.js";
+
 const { EmbedBuilder, Client, GatewayIntentBits, TextChannel} = require('discord.js');
 const puppeteer = require('puppeteer');
 const dotenv = require('dotenv');
@@ -42,7 +44,7 @@ const scrapeData = async () => {
 const sendEmbedMessage = async () => {
     const data = await scrapeData();
     const channel = client.channels.cache.get('1084926092600688740');
-    (channel as typeof TextChannel).send({
+    channel.send({
         embeds: [
             new EmbedBuilder()
             .setDescription(data as any)
