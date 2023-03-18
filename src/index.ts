@@ -1,6 +1,4 @@
-import { TextChannel } from "discord.js";
-
-const { EmbedBuilder, Client, GatewayIntentBits, TextChannel} = require('discord.js');
+const { EmbedBuilder, Client, GatewayIntentBits} = require('discord.js');
 const puppeteer = require('puppeteer');
 const dotenv = require('dotenv');
 const cron = require('node-cron');
