@@ -1,6 +1,6 @@
-import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
-import puppeteer from 'puppeteer';
-import dotenv from 'dotenv';
+const { EmbedBuilder, Client, GatewayIntentBits} = require('discord.js');
+const puppeteer = require('puppeteer');
+const dotenv = require('dotenv');
 const cron = require('node-cron');
 dotenv.config();
 
