@@ -1,7 +1,7 @@
 import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
 import puppeteer from 'puppeteer';
 import dotenv from 'dotenv';
-import cron from 'node-cron';
+const cron = require('node-cron');
 dotenv.config();
 
 // Instantiating bot/intents
