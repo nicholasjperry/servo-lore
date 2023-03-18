@@ -1,7 +1,7 @@
 import { EmbedBuilder, Client, GatewayIntentBits} from 'discord.js';
-import dotenv from 'dotenv';
 import puppeteer from 'puppeteer';
-// const cron = require('cron');
+import dotenv from 'dotenv';
+import cron from 'node-cron';
 dotenv.config();
 
 // Instantiating bot/intents
@@ -63,12 +63,16 @@ const deleteEmbedMessage = async () => {
     }
 }
 
-client.on('ready', async () => {
-    setInterval(async () => {
-        await deleteEmbedMessage();
-        await sendEmbedMessage();
-    }, 30000)
-});
-
 // Logging the bot in to the server with token
 client.login(process.env.BOT_TOKEN);
+
+
+// Ready event triggered
+client.on('ready', async () => {
+    cron.schedule('0 * * * *', async () => {
+        await deleteEmbedMessage();
+        await sendEmbedMessage();
+    }, {
+        timezone: 'America/New_York'
+    });
+});

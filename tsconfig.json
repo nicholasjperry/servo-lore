@@ -101,10 +101,10 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./src/",
+    "src/**/*",
     ".cache/puppeteer/chrome/win64-1095492/chrome-win/**/*"
   ],
   "exclude": [
-    "./node_modules"
+    "node_modules"
   ]
 }
