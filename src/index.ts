@@ -45,7 +45,7 @@ const sendEmbedMessage = async () => {
     channel.send({
         embeds: [
             new EmbedBuilder()
-            .setDescription(data as any)
+            .setDescription(data)
             .setColor('Aqua')
         ]
     });
