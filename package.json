@@ -2,7 +2,7 @@
   "name": "servo-lore",
   "version": "1.0.0",
   "description": "",
-  "main": "build/index.js",
+  "main": "./build/index.js",
   "engines": {
     "node": "18.13.0",
     "npm": "8.19.3"
@@ -19,18 +19,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.15.3",
-    "@types/node-cron": "^3.0.7",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "node-cron": "^3.0.2",
-    "puppeteer": "^19.7.5",
+    "puppeteer": "^19.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@types/node-cron": "^3.0.7",
+    "eslint": "^8.35.0",
+    "nodemon": "^2.0.21",
     "rimraf": "^4.4.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.35.0",
-    "nodemon": "^2.0.21"
   }
 }
