@@ -69,7 +69,7 @@ client.login(process.env.BOT_TOKEN);
 
 // Ready event triggered
 client.on('ready', async () => {
-    cron.schedule('0 * * * *', async () => {
+    cron.schedule('*/1 * * * *', async () => {
         await deleteEmbedMessage();
         await sendEmbedMessage();
     }, {
