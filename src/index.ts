@@ -54,7 +54,7 @@ const sendEmbedMessage = async () => {
 const deleteEmbedMessage = async () => {
     const channel = client.channels.cache.get('1084926092600688740');
     const messages = await (channel).messages.fetch();
-    const botMessage = messages?.find((message: Record<string, any>) => message.author.id === client?.user?.id);
+    const botMessage = messages?.find((message: any) => message.author.id === client?.user?.id);
 
     if (botMessage) {
         await botMessage.delete();

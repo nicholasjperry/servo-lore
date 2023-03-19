@@ -11,21 +11,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node build/index.js",
     "start:dev": "npx nodemon",
-    "dev": "nodemon src/index.ts",
-    "build": "rimraf build && tsc"
+    "dev": "nodemon ./src/index.ts",
+    "build": "rimraf ./build && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^18.15.3",
+    "@types/node-cron": "^3.0.7",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "node-cron": "^3.0.2",
     "puppeteer": "^19.7.5"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3",
-    "@types/node-cron": "^3.0.0",
     "eslint": "^8.35.0",
     "nodemon": "^2.0.21",
     "rimraf": "^4.3.1",
