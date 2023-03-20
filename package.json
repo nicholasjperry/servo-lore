@@ -2,18 +2,19 @@
   "name": "servo-lore",
   "version": "1.0.0",
   "description": "",
-  "main": "./build/index.js",
+  "main": "./build/index",
+  "typings": "./build/index",
   "engines": {
     "node": "18.13.0",
     "npm": "8.19.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node ./build/index.js",
+    "start": "npm run build && node build/index.js",
     "start:dev": "npx nodemon",
     "dev": "nodemon ./src/index.ts",
     "build": "rimraf ./build && tsc",
-    "postinstall": "npm run build"
+    "postinstall": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^18.15.3",
     "@types/node-cron": "^3.0.7",
+    "@types/puppeteer": "^7.0.4",
     "eslint": "^8.35.0",
     "nodemon": "^2.0.21",
     "rimraf": "^4.4.0",
