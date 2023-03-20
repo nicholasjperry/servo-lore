@@ -13,8 +13,7 @@
     "start": "npm run build && node build/index.js",
     "start:dev": "npx nodemon",
     "dev": "nodemon ./src/index.ts",
-    "build": "rimraf ./build && tsc",
-    "postinstall": "tsc"
+    "build": "rimraf ./build && tsc"
   },
   "keywords": [],
   "author": "",
