@@ -72,7 +72,7 @@ const deleteEmbedMessage = () => __awaiter(void 0, void 0, void 0, function* () 
 client.login(process.env.BOT_TOKEN);
 // Ready event triggered
 client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
-    cron.schedule('0 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+    cron.schedule('*/1 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
         yield deleteEmbedMessage();
         yield sendEmbedMessage();
     }), {
