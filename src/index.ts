@@ -9,48 +9,62 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
 });
 
+let post = {
+    body: '',
+    header: ''
+}
+
 const scrapeData = async () => {
-    // Open browser instance
+    // Opening browser instance
     const browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
     });
-    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     
-    // Navigate to URL
+    // Navigating to URL
+    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
     const page = await browser.newPage();
     await page.goto(url);
     console.log(`Navigating to ${url}`);
+
     try {
-        
         // Scraping data
-        const body = await page.evaluate(() => {
-            return document.querySelector('#bodyContent #mw-content-text p')?.textContent;
+        post.header = await page.evaluate(() => {
+            return document.querySelector('h1#firstHeading')?.textContent;
         });
 
-        return body;
+        post.body = await page.evaluate(() => {
+            return document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
+        });
+
+        await browser.close();
+        return post;
     } catch(err) {
         console.log(err); 
-    } finally {
-        await page.close();
-        await browser.close();
     }
 }
 
 // Sending embed message
 const sendEmbedMessage = async () => {
-    const data = await scrapeData();
+    await scrapeData();
     const channel = client.channels.cache.get('1084926092600688740');
-    channel.send({
-        embeds: [
-            new EmbedBuilder()
-            .setDescription(data)
-            .setColor('Aqua')
-        ]
-    });
+
+    if(post.body !== undefined || post.body !== null) {
+        channel.send({
+            embeds: [
+                new EmbedBuilder()
+                .setTitle(post.header)
+                .setDescription(post.body)
+                .setColor('Aqua')
+            ]
+        });
+    } else {
+        await sendEmbedMessage();
+    }
 }
 
+// Delete embed message
 const deleteEmbedMessage = async () => {
     const channel = client.channels.cache.get('1084926092600688740');
     const messages = await (channel).messages.fetch();
