@@ -22,7 +22,8 @@
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "node-cron": "^3.0.2",
-    "puppeteer": "^19.7.5"
+    "puppeteer": "^19.7.5",
+    "throng": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.3",

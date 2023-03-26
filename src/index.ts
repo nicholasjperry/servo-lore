@@ -3,89 +3,110 @@ const puppeteer = require('puppeteer');
 const dotenv = require('dotenv');
 const cron = require('node-cron');
 dotenv.config();
+const throng = require('throng');
 
-// Instantiating bot/intents
-const client = new Client({ 
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
-});
+var WORKERS = process.env.WEB_CONCURRENCY || 1;
 
-let post = {
-    body: '',
-    header: ''
-}
+function start(){
 
-const scrapeData = async () => {
-    // Opening browser instance
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+    // Instantiating bot/intents
+    const client = new Client({ 
+        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
     });
-    
-    // Navigating to URL
-    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
-    const page = await browser.newPage();
-    await page.goto(url);
-    console.log(`Navigating to ${url}`);
 
-    try {
-        // Scraping data
-        post.header = await page.evaluate(() => {
-            return document.querySelector('h1#firstHeading')?.textContent;
-        });
-
-        post.body = await page.evaluate(() => {
-            return document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
-        });
-
-        await browser.close();
-        return post;
-    } catch(err) {
-        console.log(err); 
+    let post = {
+        body: '',
+        header: '',
+        footer: ''
     }
-}
 
-// Sending embed message
-const sendEmbedMessage = async () => {
-    await scrapeData();
-    const channel = client.channels.cache.get('1084926092600688740');
-
-    if(post.body !== undefined || post.body !== null) {
-        channel.send({
-            embeds: [
-                new EmbedBuilder()
-                .setTitle(post.header)
-                .setDescription(post.body)
-                .setColor('#000000')
-            ]
+    const scrapeData = async () => {
+        // Opening browser instance
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
         });
-    } else {
-        await sendEmbedMessage();
+        
+        // Navigating to URL
+        const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
+        const page = await browser.newPage();
+        await page.goto(url);
+        console.log(`Navigating to ${url}`);
+
+        try {
+            // Scraping data
+            post.header = await page.evaluate(() => {
+                return document.querySelector('h1#firstHeading')?.textContent;
+            });
+
+            post.body = await page.evaluate(() => {
+                return document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
+            });
+
+            post.footer = await page.evaluate(() => {
+                return document.querySelector('#globalWrapper')?.baseURI;
+            });
+
+            await browser.close();
+            return post;
+        } catch(err) {
+            console.log(err); 
+        }
     }
-}
 
-// Delete embed message
-const deleteEmbedMessage = async () => {
-    const channel = client.channels.cache.get('1084926092600688740');
-    const messages = await (channel).messages.fetch();
-    const botMessage = messages?.find((message: any) => message.author.id === client?.user?.id);
+    // Sending embed message
+    const sendEmbedMessage = async () => {
+        await scrapeData();
+        const channel = client.channels.cache.get('1084926092600688740');
 
-    if (botMessage) {
-        await botMessage.delete();
-    } else {
-        return;
+
+        if(post.body !== undefined || post.body !== null) {
+            channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle(post.header)
+                    .setDescription(post.body)
+                    .setColor('#000000')
+                    .addFields(
+                        { name: `Read more about ${post.header} here:`, value: `${post.footer}`}
+                    )
+                ]
+            });
+        } else {
+            await sendEmbedMessage();
+        }
     }
-}
 
-// Logging the bot in to the server with token
-client.login(process.env.BOT_TOKEN);
+    // Delete embed message
+    const deleteEmbedMessage = async () => {
+        const channel = client.channels.cache.get('1084926092600688740');
+        const messages = await (channel).messages.fetch();
+        const botMessage = messages?.find((message: any) => message.author.id === client?.user?.id);
 
-// Ready event triggered
-client.on('ready', async () => {
-    cron.schedule('0 * * * *', async () => {
-        await deleteEmbedMessage();
-        await sendEmbedMessage();
-    }, {
-        timezone: 'America/New_York'
+        if (botMessage) {
+            await botMessage.delete();
+        } else {
+            return;
+        }
+    }
+
+    // Logging the bot in to the server with token
+    client.login(process.env.BOT_TOKEN);
+
+    // Ready event triggered
+    client.on('ready', async () => {
+        cron.schedule('0 * * * *', async () => {
+            await deleteEmbedMessage();
+            await sendEmbedMessage();
+        }, {
+            timezone: 'America/New_York'
+        });
     });
+}
+
+throng({
+    workers: WORKERS,
+    lifetime: Infinity,
+    start: start
 });
