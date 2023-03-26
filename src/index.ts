@@ -83,14 +83,10 @@ client.login(process.env.BOT_TOKEN);
 
 // Ready event triggered
 client.on('ready', async () => {
-    await deleteEmbedMessage();
-    await sendEmbedMessage();
+    cron.schedule('0 * * * *', async () => {
+        await deleteEmbedMessage();
+        await sendEmbedMessage();
+    }, {
+        timezone: 'America/New_York'
+    });
 });
-// client.on('ready', async () => {
-//     cron.schedule('0 * * * *', async () => {
-//         await deleteEmbedMessage();
-//         await sendEmbedMessage();
-//     }, {
-//         timezone: 'America/New_York'
-//     });
-// });
