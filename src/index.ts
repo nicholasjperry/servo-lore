@@ -7,7 +7,7 @@ const throng = require('throng');
 
 var WORKERS = process.env.WEB_CONCURRENCY || 1;
 
-function start(){
+async function start(){
 
     // Instantiating bot/intents
     const client = new Client({ 
@@ -20,20 +20,20 @@ function start(){
         footer: ''
     }
 
-    const scrapeData = async () => {
-        // Opening browser instance
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
-        });
-        
-        // Navigating to URL
-        const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
-        const page = await browser.newPage();
-        await page.goto(url);
-        console.log(`Navigating to ${url}`);
+    // Opening browser instance
+    const browser = await puppeteer.launch({
+        headless: false,
+        args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    });
+    
+    // Navigating to URL
+    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
+    const page = await browser.newPage();
+    await page.goto(url, { timeout: 120000 });
+    console.log(`Navigating to ${url}`);
 
+    const scrapeData = async () => {
         try {
             // Scraping data
             post.header = await page.evaluate(() => {
@@ -41,7 +41,10 @@ function start(){
             });
 
             post.body = await page.evaluate(() => {
-                return document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
+                const body = document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
+                if (body && body.length > 0) {
+                    return document.querySelector('#bodyContent #mw-content-text .mw-parser-output p')?.textContent;
+                }
             });
 
             post.footer = await page.evaluate(() => {
@@ -59,23 +62,17 @@ function start(){
     const sendEmbedMessage = async () => {
         await scrapeData();
         const channel = client.channels.cache.get('1084926092600688740');
-
-
-        if(post.body !== undefined || post.body !== null) {
-            channel.send({
-                embeds: [
-                    new EmbedBuilder()
-                    .setTitle(post.header)
-                    .setDescription(post.body)
-                    .setColor('#000000')
-                    .addFields(
-                        { name: `Read more about ${post.header} here:`, value: `${post.footer}`}
-                    )
-                ]
-            });
-        } else {
-            await sendEmbedMessage();
-        }
+        channel.send({
+            embeds: [
+                new EmbedBuilder()
+                .setTitle(post.header)
+                .setDescription(post.body)
+                .setColor('#000000')
+                .addFields(
+                    { name: `Find out more about ${post.header} here:`, value: `${post.footer}`}
+                )
+            ]
+        });
     }
 
     // Delete embed message
