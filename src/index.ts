@@ -19,7 +19,7 @@ const scrapeData = async () => {
     const browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+        // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
     });
     
     // Navigating to URL
@@ -83,10 +83,14 @@ client.login(process.env.BOT_TOKEN);
 
 // Ready event triggered
 client.on('ready', async () => {
-    cron.schedule('0 * * * *', async () => {
-        await deleteEmbedMessage();
-        await sendEmbedMessage();
-    }, {
-        timezone: 'America/New_York'
-    });
+    await deleteEmbedMessage();
+    await sendEmbedMessage();
 });
+// client.on('ready', async () => {
+//     cron.schedule('0 * * * *', async () => {
+//         await deleteEmbedMessage();
+//         await sendEmbedMessage();
+//     }, {
+//         timezone: 'America/New_York'
+//     });
+// });
