@@ -20,20 +20,20 @@ async function start(){
         footer: ''
     }
 
-    // Opening browser instance
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    });
-    
-    // Navigating to URL
-    const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
-    const page = await browser.newPage();
-    await page.goto(url, { timeout: 120000 });
-    console.log(`Navigating to ${url}`);
-
     const scrapeData = async () => {
+        // Opening browser instance
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote"],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        });
+        
+        // Navigating to URL
+        const url = 'https://wh40k.lexicanum.com/wiki/Special:Random';
+        const page = await browser.newPage();
+        await page.goto(url, { timeout: 120000 });
+        console.log(`Navigating to ${url}`);
+
         try {
             // Scraping data
             post.header = await page.evaluate(() => {
